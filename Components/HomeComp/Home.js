@@ -11,6 +11,9 @@ const Home = () => {
 const [search,setSearch] = useState("");
 const [allusers,setAllUsers] = useState([]);
 
+
+
+
 const handleGetUsers = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "Users")); 
@@ -45,14 +48,20 @@ useEffect(()=>{
 <FlatList 
 data={allusers}
 style={{marginTop:25}}
-renderItem={({item})=>(
-    <TouchableOpacity style={{marginBottom:20}}>
+renderItem={({item})=>{
+if(item.fname.toLowerCase().includes(search.toLowerCase())){
+    return (
+            <TouchableOpacity style={{marginBottom:20}}>
     <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
     <Image source={{uri:item.ProfilePic}} style={{width:width*0.18,height:height*0.09 , resizeMode:"cover",borderRadius:55}} />
         <Text style={{bottom:10,marginLeft:width*0.05,fontWeight:"500"}}>{item.fname}</Text>
     </View>
     </TouchableOpacity>
-)}
+)
+}
+
+    }
+}
 
 
 />
