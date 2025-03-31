@@ -14,6 +14,8 @@ const Messaging = ({route}) => {
     const {username} = route.params;
     const {userId} = route.params;
 const [messages,setMessages] = useState([]);
+const [inputMessage, setInputMessage] = useState('');
+const [myIdd, setMyIdd] = useState('');
 
 const navigation = useNavigation();
 
@@ -22,6 +24,7 @@ const navigation = useNavigation();
 
 const CreateRoomIdIfNotExist=async()=>{
 const myId = await AsyncStorage.getItem("userID");
+setMyIdd(myId);
 let roomId = getRoomId(myId,userId);
 
 await setDoc(doc( db,"rooms",roomId),{
@@ -46,15 +49,19 @@ const handleSendMsg = async() =>{
         
 
     let roomId = getRoomId(myId,userId);
+    if(inputMessage.length==0){
+        return;
+    }
     const msgRef = collection(doc(db,"rooms",roomId),"messages");
 
     await addDoc(msgRef,{
-        messages,
+messages: inputMessage,
         msgFromId : myId,
         msgToId : userId,
         CreatedAt : Timestamp.fromDate(new Date())
     })
 console.log("sended correctly")
+setInputMessage("");
 } catch (error) {
         console.log(error);
 }
@@ -106,10 +113,27 @@ console.log("All Data : ",messages)
 </TouchableOpacity>
 
 </View>
+{
+    Array.isArray(messages) && messages.map((item, index) => {
+        if(item.msgFromId==myIdd){
+            return (
+                <View key={index} style={{marginLeft:width*0.45,marginTop:20,width:width*0.5}}>
+    <Text style={{backgroundColor:"#7fdf88",paddingHorizontal:7,borderRadius:70,textAlign:"center",paddingVertical:10}}>{item.messages}</Text>
+</View>
+            )
+        }else {
+            return (
+                <View  key={index} style={{marginTop:20,width:width*0.5,marginLeft:15}}>
+    <Text style={{backgroundColor:"#82d1e0",paddingHorizontal:7,borderRadius:70,textAlign:"center",paddingVertical:10}}>{item.messages}</Text>
+</View>
 
+            )
+        }
+    })
+}
 </ScrollView>
 <View style={{display:"flex",flexDirection:"row",marginBottom:25,alignItems:"center"}}>
-<TextInput onSubmitEditing={handleSendMsg} onChangeText={(e)=>setMessages(e)} keyboardType='default' placeholder='Enter Message......' style={{marginLeft:width*0.05,width:width*0.88,height:height*0.08,borderRadius:17,paddingHorizontal:18,borderWidth:0.4,position:"absolute"}} />
+<TextInput onSubmitEditing={handleSendMsg} value={inputMessage} onChangeText={setInputMessage} keyboardType='default' placeholder='Enter Message......' style={{marginLeft:width*0.05,width:width*0.88,height:height*0.08,borderRadius:17,paddingHorizontal:18,borderWidth:0.4,position:"absolute"}} />
 
 </View>
 

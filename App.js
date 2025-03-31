@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 
   return (
 <NavigationContainer>
-<Stack.Navigator initialRouteName='home'>
+<Stack.Navigator initialRouteName='signin'>
   <Stack.Screen name='signin' component={SignIn} options={{headerShown:false}}/>
   <Stack.Screen name='signup' component={SignUp} options={{headerShown:false}}/>
   <Stack.Screen name='choosepic' component={ChoosePic} options={{headerShown:false}}/>

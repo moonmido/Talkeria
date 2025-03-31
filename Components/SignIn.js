@@ -2,9 +2,10 @@ import { View, Text, StyleSheet, Dimensions, Image, TextInput, TouchableOpacity,
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import {auth, signInWithEmailAndPassword} from '../FireBaseDB/firebaseConfig';
+import {auth, db, signInWithEmailAndPassword} from '../FireBaseDB/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { doc, getDoc } from 'firebase/firestore';
 
 const {width,height} = Dimensions.get("window");
 
@@ -20,7 +21,9 @@ const handleSignin = async()=>{
         const userCre = signInWithEmailAndPassword(auth,email,password);
         const user = (await userCre).user;
         await AsyncStorage.setItem("userID",user.uid)
-        navigation.navigate("choosepic");
+        const userref = await getDoc(doc(db,"Users",user.uid));
+        if (userref.data().ProfilePic !=null) navigation.navigate("home");
+        else  navigation.navigate("choosepic");
     } catch (error) {
         console.error(error);
         Alert.alert("Email or Password Are Wrong !")

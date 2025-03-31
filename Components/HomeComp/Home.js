@@ -13,6 +13,7 @@ const Home = () => {
 
 const [search,setSearch] = useState("");
 const [allusers,setAllUsers] = useState([]);
+const [id,setId] = useState('');
 
 const navigation = useNavigation();
 
@@ -20,8 +21,10 @@ const navigation = useNavigation();
 
 
 
-const handleGetUsers = async () => {
 
+const handleGetUsers = async () => {
+const myid = await AsyncStorage.getItem("userID");
+setId(myid);
     try {
       const querySnapshot = await getDocs(collection(db, "Users")); 
       let usersList = [];
@@ -65,7 +68,7 @@ useEffect(()=>{
 data={allusers}
 style={{marginTop:25}}
 renderItem={({item})=>{
-if(item.fname.toLowerCase().includes(search.toLowerCase())){
+if(item.fname.toLowerCase().includes(search.toLowerCase()) && item.id != id){
     return (
             <TouchableOpacity style={{marginBottom:20}} onPress={()=>navigation.navigate("messaging",{
               profilePic : item.ProfilePic,
