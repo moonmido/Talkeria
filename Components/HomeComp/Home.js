@@ -1,20 +1,27 @@
 import { View, Text, SafeAreaView, StyleSheet, Dimensions, TextInput, Alert, FlatList, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, setDoc, Timestamp } from "firebase/firestore";
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../FireBaseDB/firebaseConfig';
 const {width,height} = Dimensions.get('window');
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { getRoomId } from '../../CommonsFuncs/Common';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 const Home = () => {
 
 const [search,setSearch] = useState("");
 const [allusers,setAllUsers] = useState([]);
 
+const navigation = useNavigation();
+
+
 
 
 
 const handleGetUsers = async () => {
+
     try {
       const querySnapshot = await getDocs(collection(db, "Users")); 
       let usersList = [];
@@ -38,6 +45,15 @@ useEffect(()=>{
 
 
 
+
+
+
+
+
+
+
+
+
   return (
     <SafeAreaView style={styles.container}>
 <View style={{marginLeft:width*0.05,marginTop:height*0.065}}>
@@ -51,7 +67,11 @@ style={{marginTop:25}}
 renderItem={({item})=>{
 if(item.fname.toLowerCase().includes(search.toLowerCase())){
     return (
-            <TouchableOpacity style={{marginBottom:20}}>
+            <TouchableOpacity style={{marginBottom:20}} onPress={()=>navigation.navigate("messaging",{
+              profilePic : item.ProfilePic,
+              username:item.fname,
+              userId: item.id 
+            })}>
     <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
     <Image source={{uri:item.ProfilePic}} style={{width:width*0.18,height:height*0.09 , resizeMode:"cover",borderRadius:55}} />
         <Text style={{bottom:10,marginLeft:width*0.05,fontWeight:"500"}}>{item.fname}</Text>
