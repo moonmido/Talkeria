@@ -100,7 +100,6 @@ console.log("All Data : ",messages)
 
   return (
     <SafeAreaView style={{width:width,height:height}}>
-<ScrollView>
 <View style={{display:"flex",flexDirection:"row",alignItems:"center",padding:15,borderBottomWidth:0.2,elevation:80,shadowColor:"black",marginTop:height*0.05}}>
 
 <TouchableOpacity style={{width:width*0.09}} onPress={()=>navigation.navigate("home")}>
@@ -111,8 +110,8 @@ console.log("All Data : ",messages)
 <TouchableOpacity style={{width:width*0.09,position:"absolute",right:width*0.05}}>
 <MaterialIcons name="call" size={24} color="black" />
 </TouchableOpacity>
-
 </View>
+<ScrollView contentContainerStyle={{paddingBottom:100}}>
 {
     Array.isArray(messages) && messages.map((item, index) => {
         if(item.msgFromId==myIdd){
@@ -133,7 +132,7 @@ console.log("All Data : ",messages)
 }
 </ScrollView>
 <View style={{display:"flex",flexDirection:"row",marginBottom:25,alignItems:"center"}}>
-<TextInput onSubmitEditing={handleSendMsg} value={inputMessage} onChangeText={setInputMessage} keyboardType='default' placeholder='Enter Message......' style={{marginLeft:width*0.05,width:width*0.88,height:height*0.08,borderRadius:17,paddingHorizontal:18,borderWidth:0.4,position:"absolute"}} />
+<TextInput placeholderTextColor={"#bfbfbf"} onSubmitEditing={handleSendMsg} value={inputMessage} onChangeText={setInputMessage} keyboardType='default' placeholder='Enter Message......' style={{marginLeft:width*0.05,width:width*0.88,height:height*0.08,borderRadius:17,paddingHorizontal:18,borderWidth:0.4,position:"absolute",backgroundColor:"#353a5a"}} />
 
 </View>
 
