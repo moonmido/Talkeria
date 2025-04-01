@@ -7,6 +7,7 @@ import SignUp from './Components/SignUp';
 import ChoosePic from './Components/HomeComp/ChoosePic';
 import Home from './Components/HomeComp/Home';
 import Messaging from './Components/HomeComp/Messaging';
+import Adapter from './Components/Splach/Adapter';
 
 export default function App() {
 
@@ -14,12 +15,13 @@ const Stack = createStackNavigator();
 
   return (
 <NavigationContainer>
-<Stack.Navigator initialRouteName='signin'>
+<Stack.Navigator initialRouteName='splach'>
   <Stack.Screen name='signin' component={SignIn} options={{headerShown:false}}/>
   <Stack.Screen name='signup' component={SignUp} options={{headerShown:false}}/>
   <Stack.Screen name='choosepic' component={ChoosePic} options={{headerShown:false}}/>
   <Stack.Screen name='home' component={Home} options={{headerShown:false}}/>
   <Stack.Screen name='messaging' component={Messaging} options={{headerShown:false}}/>
+  <Stack.Screen name='splach' component={Adapter} options={{headerShown:false}}/>
 
 
 

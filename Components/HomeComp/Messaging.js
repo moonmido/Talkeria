@@ -4,11 +4,14 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 const {width,height} = Dimensions.get("window");
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Ionicons } from '@expo/vector-icons';
+
 import Feather from '@expo/vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getRoomId } from '../../CommonsFuncs/Common';
 import { addDoc, collection, doc, onSnapshot, orderBy, query, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../../FireBaseDB/firebaseConfig';
+import { KeyboardAvoidingView } from 'react-native';
 const Messaging = ({route}) => {
     const {profilePic} = route.params;
     const {username} = route.params;
@@ -131,11 +134,47 @@ console.log("All Data : ",messages)
     })
 }
 </ScrollView>
-<View style={{display:"flex",flexDirection:"row",marginBottom:25,alignItems:"center"}}>
-<TextInput placeholderTextColor={"#bfbfbf"} onSubmitEditing={handleSendMsg} value={inputMessage} onChangeText={setInputMessage} keyboardType='default' placeholder='Enter Message......' style={{marginLeft:width*0.05,width:width*0.88,height:height*0.08,borderRadius:17,paddingHorizontal:18,borderWidth:0.4,position:"absolute",backgroundColor:"#353a5a"}} />
 
+
+<View style={{display: "flex", flexDirection: "row", marginBottom: 25, alignItems: "center"}}>
+  <TextInput 
+    placeholderTextColor={"#bfbfbf"} 
+    value={inputMessage} 
+    onChangeText={(text) => {
+      setInputMessage(text);
+    }} 
+    keyboardType='default' 
+    placeholder='Enter Message......' 
+    style={{
+      marginLeft: width * 0.05,
+      width: inputMessage.length > 0 ? width * 0.75 : width * 0.88,
+      height: height * 0.08,
+      borderRadius: 17,
+      paddingHorizontal: 18,
+      borderWidth: 0.4,
+      position: "absolute",
+      backgroundColor: "#353a5a",
+      color: "white"
+    }} 
+  />
+  {inputMessage.length > 0 && (
+    <TouchableOpacity 
+      onPress={handleSendMsg}
+      style={{
+        position: "absolute",
+        right: width * 0.07,
+        backgroundColor: "#4a5082",
+        height: height * 0.06,
+        width: height * 0.06,
+        borderRadius: height * 0.03,
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <Ionicons name="send" size={20} color="white" />
+    </TouchableOpacity>
+  )}
 </View>
-
     </SafeAreaView>
   )
 }
